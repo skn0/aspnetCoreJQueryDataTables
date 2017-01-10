@@ -18,11 +18,13 @@ namespace Abc.Web.Controllers.api
         [HttpPost]
         public IActionResult Post()
         {
+            //Get form data from client side
             var requestFormData = Request.Form;                        
             List<Models.Item> lstItems = GetData();
             
             var listItems = ProcessCollection(lstItems, requestFormData);
             
+            // Custom response to bind information in client side
             dynamic response = new
             {
                 Data = listItems,
@@ -33,6 +35,10 @@ namespace Abc.Web.Controllers.api
             return Ok(response);
         }
         
+        /// <summary>
+        /// Get a list of Items
+        /// </summary>
+        /// <returns>list of items</returns>
         private List<Models.Item> GetData()
         {
             List<Models.Item> lstItems = new List<Models.Item>()
@@ -59,6 +65,11 @@ From ANKER, America's Leading USB Charging Brand
             return lstItems;
         }
 
+        /// <summary>
+        /// Get a property info object from Item class filtering by property name.
+        /// </summary>
+        /// <param name="name">name of the property</param>
+        /// <returns>property info object</returns>
         private PropertyInfo getProperty(string name)
         {
             var properties = typeof(Models.Item).GetProperties();
@@ -74,6 +85,12 @@ From ANKER, America's Leading USB Charging Brand
             return prop;
         }
 
+        /// <summary>
+        /// Process a list of items according to Form data parameters
+        /// </summary>
+        /// <param name="lstElements">list of elements</param>
+        /// <param name="requestFormData">collection of form data sent from client side</param>
+        /// <returns>list of items processed</returns>
         private List<Models.Item> ProcessCollection(List<Models.Item> lstElements, IFormCollection requestFormData)
         {
             var skip = Convert.ToInt32(requestFormData["start"].ToString());
